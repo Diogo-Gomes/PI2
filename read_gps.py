@@ -25,3 +25,6 @@ while 1:
     graus_long = longitude[0]+longitude[1]+longitude[2]
     coordenadas = graus_lat+'º'+latitude[2:]+"'"+ dados[4]+','+graus_long+'º'+longitude[3:]+"'"+dados[6]	
     print(coordenadas)
+    arq = open("file.txt","a")
+    arq.write(coordenadas)
+    arq.close()
