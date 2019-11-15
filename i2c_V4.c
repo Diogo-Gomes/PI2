@@ -84,8 +84,8 @@ int main(void)
 
         char user_input2=1, msp430_ret2, slave_addr2=0x0A;
         //unsigned int c=0;
-        float ad5,ad4,ad3,ad2,ad1,ad0;
-        float media_temp;
+        double ad5,ad4,ad3,ad2,ad1,ad0;
+        double media_temp, divt1, divt2;
 
         signal(SIGINT, ctrl_c);
         i2c_fd = open("/dev/i2c-1", O_RDWR);
@@ -103,30 +103,32 @@ int main(void)
                 //printf("msp retornou = %d\n \n", msp430_ret2);
 
                 if (cont2==1){
-			ad5=msp430_ret2*(1023/255);
-                        printf("Valor do sensor em AD5 (LDR_1) é: %d\n", msp430_ret2);
+                        ad5=msp430_ret2*(1023/255);
+                        printf("Valor do sensor em AD5 (LDR_1) é: %.2f\n", ad5);
                 }
                 else if (cont2==2){
                         ad4=msp430_ret2*(1023/255);
-                        printf("Valor do sensor em AD4 (LDR_2) é: %d\n", msp430_ret2);
+                        printf("Valor do sensor em AD4 (LDR_2) é: %.2f\n", ad4);
                 }
                 else if (cont2==3){
-                        ad3=msp430_ret2*(1023/255);
-                        printf("Valor do sensor em AD3 (CORRENTE_BATERIA): %d\n", msp430_ret2);
+			ad3=msp430_ret2*(1023/255);
+                        printf("Valor do sensor em AD3 (CORRENTE_BATERIA): %.2f\n", ad3);
                 }
                 else if (cont2==4){
                         ad2=msp430_ret2*(1023/255);
-                        printf("Valor do sensor em AD2 (CORRENTE_GERADOR) é %d\n", msp430_ret2);
+                        printf("Valor do sensor em AD2 (CORRENTE_GERADOR) é %.2f\n", ad2);
                 }
                 else if (cont2==5){
-                        ad1=msp430_ret2*(1023/255)*resoluc*(2.194410693);
-                        printf("Valor do sensor em AD1 (TENSÃO_BATERIA) é %d\n", msp430_ret2*(1023/255));
-                        printf("TENSÃ0 NA BATERIA = %f \n", ad1);
+                        ad1=msp430_ret2*(1023/255); //*resoluc*(2.194410693);
+                        divt1 = ad1*resoluc*(2.194410693);
+                        printf("Valor do sensor em AD1 (TENSÃO_BATERIA) é %.2f\n", ad1);
+                        printf("TENSÃ0 NA BATERIA = %f \n", divt1);
                 }
-		else if (cont2==6){
-                        ad0=msp430_ret2*(1023/255)*resoluc*(3.1205074);
-                        printf("Valor do sensor em AD0 (TENSÃO_GERADOR) é %d\n", msp430_ret2*(1023/255));
-                        printf("TENSÃO NO GERADOR = %f \n", ad0);
+                else if (cont2==6){
+                        ad0=msp430_ret2*(1023/255); //*resoluc*(3.1205074);
+                        divt2 = ad1*resoluc*3.1205074;
+                        printf("Valor do sensor em AD0 (TENSÃO_GERADOR) é %.2f\n", ad0);
+                        printf("TENSÃO NO GERADOR = %.2f \n", divt2);
                 }
 
                 puts("");
